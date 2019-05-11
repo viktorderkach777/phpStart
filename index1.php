@@ -6,15 +6,6 @@
 </head>
 <body>
 
-<?php if (isset($_SESSION['message'])): ?>
-		<div class="msg">
-			<?php 
-				echo $_SESSION['message']; 
-				unset($_SESSION['message']);
-			?>
-		</div>
-	<?php endif ?>
-
 
 
 <?php
@@ -22,6 +13,29 @@ require_once 'connection.php'; // подключаем скрипт
 // подключаемся к серверу
 $link = mysqli_connect($host, $user, $password, $database) 
         or die("Ошибка " . mysqli_error($link)); 
+
+
+
+//include('server.php');
+	if (isset($_GET['edit'])) {
+		$id = $_GET['edit'];
+		$update = true;
+		$record = mysqli_query($link, "SELECT * FROM tovars WHERE id=$id");
+
+		if (count($record) == 1 ) {
+			$n = mysqli_fetch_array($record);
+			$name = $n['name'];
+			$company = $n['company'];
+		}
+
+	}
+
+
+
+
+
+
+
      
 // если запрос POST 
 if(isset($_POST['name']) && isset($_POST['company']) && isset($_POST['id'])){
@@ -58,8 +72,8 @@ if($result2)
 {
  echo "<td>$row2[$j]</td>";
 }
-echo "<td><a href='index1.php?edit= $row[0];' class='edit_btn' >Edit</a></td>";
-echo "<td><a href='server.php?del= $row[0];' class='del_btn' >Delete</a></td>";
+echo "<td><a href='index1.php?id=$myid;' class='edit_btn' >Edit</a></td>";
+echo "<td><a href='server.php?del=$myid;' class='del_btn' >Delete</a></td>";
         echo "</tr>";
     }
     echo "</table>";
